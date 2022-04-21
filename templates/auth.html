@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Book</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Open+Sans:wght@700&family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+  {% for sub in subjects_list %}
+
+    <table>
+      <caption><h3>{{sub.name}}</h3></caption>
+      <tr>
+        <td>Ученик/дата</td>
+        # плохо
+
+        <td>Дата</td>
+        <td>Тема урока</td>
+        <td>Оценка</td>
+        <td>Предмет</td>
+      </tr>
+      <tr>
+        <td>{{grade.student}}</td>
+        <td>Jack Russell</td>
+        <td>Poodle</td>
+        <td>Streetdog</td>
+        <td>Cocker Spaniel</td>
+      </tr>
+      <tr>
+        <td>Age</td>
+        <td>16</td>
+        <td>9</td>
+        <td>10</td>
+        <td>5</td>
+      </tr>
+    </table>
+  <br>
+  {% endfor %}
+  # хорошо
+  {% for grade in grades_list %}
+    <div class='book'>
+            <div class='list'>
+                <h1>Тема урока: {{ grade.lesson_topic }}</h1>
+                <h3>Оценка: {{grade.grade}}</h3>
+                <h3>Дата урока: {{ grade.date_gr }}</h3>
+                <h3>Ученик: {{ grade.student }}</h3>
+                <h3>Предмет: {{ grade.subject }}</h3>
+            </div>
+    </div>
+
+
+    {% endfor %}
+  </body>
+</html>
