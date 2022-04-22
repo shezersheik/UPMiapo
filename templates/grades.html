@@ -10,16 +10,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Open+Sans:wght@700&family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
   </head>
   <body>
-    {% for grade in grades_list %}
-    <div class='book'>
-            <div class='list'>
-                <h1>Тема урока: {{ grade.lesson_topic }}</h1>
-                <h3>Оценка: {{grade.grade}}</h3>
-                <h3>Дата урока: {{ grade.date_gr }}</h3>
-                <h3>Ученик: {{ grade.student }}</h3>
-                <h3>Предмет: {{ grade.subject }}</h3>
-            </div>
-    </div>
-    {% endfor %}
+
+     <table align="center" width="50%">
+         <caption>Оценки</caption>
+      <tr class="samara"><th>Предмет - Учитель</th><th>Тема урока</th><th>Оценка</th><th>Дата</th></tr>
+        {% for grade in grades_list %}
+            <tr><td>{{grade.lesson_topic.subject}}</td><td>{{grade.lesson_topic.lesson_topic}}</td><td>{{grade.grade}}</td><td>{{grade.lesson_topic.date_ls}}</td></tr>
+        {% endfor %}
+    </table>
+<br>
+     <table align="center" width="50%">
+         <caption>Итоговые оценки</caption>
+      <tr class="samara"><th>Предмет - Учитель</th><th>Итоговая оценка</tr>
+        {% for fgrades in fgrades_list %}
+            <tr><td>{{fgrades.subject}}</td><td>{{fgrades.fgrade}}</tr>
+        {% endfor %}
+    </table>
+
+
+
+
   </body>
 </html>

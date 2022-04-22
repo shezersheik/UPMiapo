@@ -33,10 +33,11 @@ class Student(models.Model):
         verbose_name = "Ученик"
         verbose_name_plural = "Ученики"
 
+
 class Subject(models.Model):
     """Предмет"""
     name = models.CharField("Название предмета", max_length=30)
-    teacher = models.ForeignKey(Teacher, verbose_name="Учитель", on_delete=models.SET_NULL, null=True)
+    teacher = models.ForeignKey(Teacher, verbose_name="Учитель", on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f'{self.name} - {self.teacher}'
@@ -46,21 +47,57 @@ class Subject(models.Model):
         verbose_name_plural = "Предметы"
 
 
-class Grade(models.Model):
-    """Предмет"""
+class Lesson(models.Model):
+    """"Урок"""
+    subject = models.ForeignKey(Subject, verbose_name="Предмет", on_delete=models.SET_NULL, null=True, blank=True)
+    date_ls = models.DateField("Дата урока", default=date.today)
     lesson_topic = models.CharField("Тема урока", max_length=100)
-    grade = models.PositiveIntegerField("Оценка", null=True)
-    date_gr = models.DateField("Дата выставление оценки", default=date.today)
-    student = models.ForeignKey(Student, verbose_name="Ученик", on_delete=models.SET_NULL, null=True)
-    subject = models.ForeignKey(Subject, verbose_name="Предмет", on_delete=models.SET_NULL, null=True)
-    fgrade = models.PositiveIntegerField("Итоговая оценка", null=True, blank=True)
+    homework = models.TextField("Домашнее задание", null=True, blank=True, default='')
+
+
+
 
     def __str__(self):
-        return f'{self.subject}  {self.date_gr} {self.grade} {self.student}'
+        return f'{self.date_ls}  {self.lesson_topic} {self.homework[50:]}...'
+
+    class Meta:
+        verbose_name = "Урок"
+        verbose_name_plural = "Уроки"
+
+class Grade (models.Model):
+    GRADES = (
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5')
+    )
+    grade = models.CharField("Оценка", max_length=1, choices=GRADES, null=True)
+    lesson_topic = models.ForeignKey(Lesson, verbose_name="Тема урока", on_delete=models.SET_NULL, null=True, blank=True)
+    student = models.ForeignKey(Student, verbose_name="Ученик", on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.student}  {self.grade} {self.lesson_topic}'
 
     class Meta:
         verbose_name = "Оценка"
         verbose_name_plural = "Оценки"
 
+class FinalGrade(models.Model):
+    FGRADES = (
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5'),
+        ('ЗЧ', 'Зачет'),
+        ('НЗ', 'Не зачет')
+    )
+    fgrade = models.CharField("Оценка", max_length=2, choices=FGRADES, null=True)
+    student = models.ForeignKey(Student, verbose_name="Ученик", on_delete=models.SET_NULL, null=True, blank=True)
+    subject = models.ForeignKey(Subject, verbose_name="Предмет", on_delete=models.SET_NULL, null=True, blank=True)
 
+    def __str__(self):
+        return f'{self.subject}, {self.student} {self.fgrade}'
 
+    class Meta:
+        verbose_name = "Итоговая оценка"
+        verbose_name_plural = "Итоговые оценки"
